@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Roll Dice Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -37,7 +37,7 @@
             let die2 = document.getElementById("die2");
 
             let rollingTime = 1000; // Rolling animation duration (in ms)
-            let intervalTime = 300; // Time between dice face changes (in ms)
+            let intervalTime = 100; // Time between dice face changes (in ms)
 
             let startTime = Date.now();
             let interval = setInterval(() => {
@@ -86,6 +86,15 @@
                         document.getElementById("page-content").classList.remove("blurred");
                         document.getElementById("overlay").style.display = "none";
                         document.getElementById("popup-box").style.display = "none";
+
+                        // Reset counts to 0
+                        left_count.innerText = 0;
+                        right_count.innerText = 0;
+
+                        // Remove appended elements (message and button)
+                        const popupBox = document.getElementById('popup-box');
+                        const elements = popupBox.querySelectorAll('p, button');
+                        elements.forEach(element => element.remove());
                     }
 
                     function showWinnerMessage(winnerText) {
@@ -98,7 +107,7 @@
                         hideButton.innerText = 'New Game';
                         document.getElementById('popup-box').appendChild(hideButton);
 
-                        hideButton.onclick = hidePopup;  
+                        hideButton.onclick = hidePopup;
 
                     }
 
