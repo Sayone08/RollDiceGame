@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container" id="page-content">
+        <h1 class="heading">Auto Dice Game</h1>
+        <div class="img-box">
+            <button id="left_count">0</button>
+            <img id="die1" src="Images/die1.jpg" width="300" height="300" />
+            <img id="die2" src="Images/die2.jpg" width="300" height="300" />
+            <button id="right_count">0</button>
+        </div>
+        <button onclick="rollDice()">Roll Dice</button>
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay" style="display: none;"></div>
+
+    <!-- Centered Box -->
+    <div id="popup-box" class="center-box" style="display: none;">
+        <h1>WINNER!!</h1>
+    </div>
+
+
+    <!-- scripts -->
+
+    <script type="text/javascript">
+        function rollDice() {
+            let die1 = document.getElementById("die1");
+            let die2 = document.getElementById("die2");
+
+            let rollingTime = 1000; // Rolling animation duration (in ms)
+            let intervalTime = 300; // Time between dice face changes (in ms)
+
+            let startTime = Date.now();
+            let interval = setInterval(() => {
+                // Generate random dice faces for animation effect
+                die1.src = "Images/die" + (Math.floor(Math.random() * 6) + 1) + ".jpg";
+                die2.src = "Images/die" + (Math.floor(Math.random() * 6) + 1) + ".jpg";
+
+                // Stop rolling animation after rollingTime has passed
+                if (Date.now() - startTime > rollingTime) {
+                    clearInterval(interval); // Stop animation
+
+                    // Set final dice roll result
+                    let roll1 = Math.floor(Math.random() * 6) + 1;
+                    let roll2 = Math.floor(Math.random() * 6) + 1;
+                    die1.src = "Images/die" + roll1 + ".jpg";
+                    die2.src = "Images/die" + roll2 + ".jpg";
+
+                    let left_count = document.getElementById('left_count');
+                    let res1 = Number(left_count.innerText);
+
+                    let right_count = document.getElementById('right_count');
+                    let res2 = Number(right_count.innerText);
+
+                    if (roll1 > roll2) {
+                        res1++;
+                    }
+                    else if (roll1 < roll2) {
+                        res2++;
+                    }
+                    else {
+                        res1++;
+                        res2++;
+                    }
+
+                    left_count.innerText = res1;
+                    right_count.innerText = res2;
+
+
+                    function showpopup() {
+                        document.getElementById("page-content").classList.add("blurred");
+                        document.getElementById("overlay").style.display = "block";
+                        document.getElementById("popup-box").style.display = "block";
+                    }
+
+                    function hidePopup() {
+                        document.getElementById("page-content").classList.remove("blurred");
+                        document.getElementById("overlay").style.display = "none";
+                        document.getElementById("popup-box").style.display = "none";
+                    }
+
+                    function showWinnerMessage(winnerText) {
+                        showpopup();
+                        let element = document.createElement('p');
+                        element.innerText = winnerText;
+                        document.getElementById('popup-box').appendChild(element);
+
+                        let hideButton = document.createElement('button');
+                        hideButton.innerText = 'New Game';
+                        document.getElementById('popup-box').appendChild(hideButton);
+
+                        hideButton.onclick = hidePopup;  
+
+                    }
+
+                    if (res1 === 5) {
+                        showWinnerMessage('Left-Dice is the winner');
+                    }
+
+                    if (res2 === 5) {
+                        showWinnerMessage('Right-Dice is the winner');
+                    }
+
+                    if (res1 === 5 && res2 === 5) {
+                        showWinnerMessage('Both are the winner');
+                    }
+
+
+
+                }
+            }, intervalTime);
+        }
+    </script>
+
+</body>
+
+</html>
